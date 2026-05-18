@@ -1,21 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 32" width="100%" height="100%">
-  <style>
-    .bg { fill: #0D1117; }
-    .rb-text { font-family: monospace; font-size: 13px; font-weight: bold; fill: #000000; }
-    .rb-grad { fill: url(#rainbow-gradient); }
-  </style>
-  <linearGradient id="rainbow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-    <stop offset="0%" stop-color="#FF0000" />
-    <stop offset="17%" stop-color="#FFA500" />
-    <stop offset="34%" stop-color="#FFFF00" />
-    <stop offset="51%" stop-color="#008000" />
-    <stop offset="68%" stop-color="#0000FF" />
-    <stop offset="85%" stop-color="#4B0082" />
-    <stop offset="100%" stop-color="#EE82EE" />
-  </linearGradient>
-  <rect width="100%" height="100%" class="bg" rx="4" />
-  <g transform="translate(6, 6)">
-    <rect width="308" height="20" class="rb-grad" rx="3" />
-    <text x="8" y="14" class="rb-text">RADICAL RETRO STYLE ACTIVATED</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 28" width="260" height="28">
+  <rect width="100%" height="100%" fill="#0D1117" stroke="#444C56" stroke-width="1" rx="4" />
+  <g transform="translate(5, 5)">
+    <rect x="0" y="0" width="36" height="18" fill="#FF0000" />
+    <rect x="36" y="0" width="36" height="18" fill="#FFA500" />
+    <rect x="72" y="0" width="36" height="18" fill="#FFFF00" />
+    <rect x="108" y="0" width="36" height="18" fill="#008000" />
+    <rect x="144" y="0" width="36" height="18" fill="#0000FF" />
+    <rect x="180" y="0" width="35" height="18" fill="#4B0082" />
+    <rect x="215" y="0" width="35" height="18" fill="#EE82EE" />
   </g>
+  <text x="12" y="18" font-family="monospace" font-size="12" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" paint-order="stroke fill">RADICAL RETRO STYLE ACTIVATED</text>
 </svg>
