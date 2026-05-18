@@ -17,13 +17,13 @@ A tiny, cross-platform JavaScript debug console featuring custom color styles an
 Instantiate the debug instance at the top of your execution wrapper. You can configure custom settings or leave it empty to rely on our automatic environment discovery rules:
 ```javascript
 const debug = new Debug( {
-  name: 'myCoolUserScript',
-  version: '0.0.1',                // Optional: defaults to auto-detected script or env version
-  logChan: 'debug',                // Optional: choose 'debug', 'info', 'log', etc. Defaults to 'debug' with 'info' fallback.
-  showTag: true,                   // Optional: toggle switch for [myCoolUserScript v0.0.1] tag. Defaults to true.
-  showTime: true,                  // Optional: toggle the live system timestamp bracket. Defaults to true.
-  styles: {                        // Optional: override any default color palette styles
-    tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;'
+  name: 'myCoolUserscript',
+  version: '0.0.1',         // Optional: defaults to auto-detected script or env version
+  logChan: 'debug',         // Optional: choose 'debug', 'info', 'log', etc. Defaults to 'debug' with 'info' fallback.
+  showTag: true,            // Optional: toggle switch for [myCoolUserScript v0.0.1] tag. Defaults to true.
+  showTime: true,           // Optional: toggle the live system timestamp bracket. Defaults to true.
+  styles: {                 // Optional: override any default color palette styles
+    halloween: 'color: #00FFFF; background: #000000; font-weight: bold;'
   }
 } );
 ```
@@ -33,10 +33,12 @@ const debug = new Debug( {
 
 ```javascript
 require( './path/to/debug.js' );
-
 const debug = new Debug( { name: 'myCoolBot', version: '0.0.1' } );
-
-debug.success( '%cpretty-debug%c successfully initialized in Node.js context!', debug.style.rainbow, debug.style.reset );
+debug.success(
+  '%cpretty-debug%c successfully initialized in Node.js context!',
+  debug.style.rainbow,
+  debug.style.reset
+);
 ```
 
 ### 3. Browser Console Context
@@ -44,10 +46,15 @@ To run diagnostics or test features directly inside your browser developer tools
 
 ```javascript
 fetch( 'https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js' )
-  .then( res => res.text() ).then( code => {
+  .then( res => res.text() )
+  .then( code => {
     eval( code );
     window.debug = new Debug( { name: 'devTools', logChan: 'log' } );
-    debug.success( '%cpretty-debug%c successfully injected globally into this tab!', debug.style.rainbow, debug.style.reset );
+    debug.success(
+      '%cpretty-debug%c successfully injected globally into this tab!',
+      debug.style.rainbow,
+      debug.style.reset
+    );
   } );
 ```
 
@@ -59,7 +66,7 @@ fetch( 'https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/m
 The public `debug.style` property exposes your active theme dictionary as a read-only object. To style specific pieces of text *inside* a log sentence, insert multiple `%c` substitution markers into your message string, and pass your chosen styles sequentially inside the trailing variables array:
 
 ```javascript
-debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style.warn, debug.style.reset );
+debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style.warn, debug.style.reset);
 ```
 
 #### Available Default Theme Styles
