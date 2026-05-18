@@ -293,4 +293,5 @@
   }
 
   global.Debug = Debug;
+  if ( typeof module !== 'undefined' && module.exports ) { module.exports = Debug; }
 } )( this );
