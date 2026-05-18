@@ -63,39 +63,32 @@ debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style
 ```
 
 #### Available Default Theme Styles
-* ⚙️ `debug.style.debug` — **Standard Console Channel**
+
+* ⚙️ `debug.style.debug` — **Standard Console Channel** <img src="previews/debug.svg" height="28" align="right" />
   * *Appearance:* Flat, muted medium-gray text designed for low-priority diagnostics.
-  * *Console Preview:* ![Debug Preview](./previews/debug.svg)
-* ❌ `debug.style.error` — **Standard Error Line**
+* ❌ `debug.style.error` — **Standard Error Line**<img src="previews/error.svg" height="28" align="right" />
   * *Appearance:* Thick, high-visibility crimson red font face.
-  * *Console Preview:* ![Error Preview](previews/error.svg)
-* 🚨 `debug.style.fatal` — **Critical System Panic**
+* 🚨 `debug.style.fatal` — **Critical System Panic** <img src="previews/fatal.svg" height="28" align="right" />
   * *Appearance:* Thick pale yellow font face isolated over a solid blood-red background bar.
-  * *Console Preview:* ![Fatal Preview](previews/fatal.svg)
-* 🔷 `debug.style.info` — **Informational Messages**
+* 🔷 `debug.style.info` — **Informational Messages** <img src="previews/info.svg" height="28" align="right" />
   * *Appearance:* Vibrant, professional high-contrast deep corporate blue text.
-  * *Console Preview:* ![Info Preview](previews/info.svg)
-* ✉️ `debug.style.log` — **Raw Baseline Text**
+* ✉️ `debug.style.log` — **Raw Baseline Text** <img src="previews/log.svg" height="28" align="right" />
   * *Appearance:* Completely clean, unstyled font properties that inherit browser environments natively.
-* 🌐 `debug.style.network` — **Interceptor Telemetry**
+* 🌐 `debug.style.network` — **Interceptor Telemetry** <img src="previews/network.svg" height="28" align="right" />
   * *Appearance:* Slanted, italicized electric cyan font face.
-  * *Console Preview:* ![Network Preview](previews/network.svg)
-* 🌈 `debug.style.rainbow` — **1990's Throwback Spectrum**
+* 🌈 `debug.style.rainbow` — **1990's Throwback Spectrum** <img src="previews/rainbow.svg" height="28" align="right" />
   * *Appearance:* High-contrast black font face set on a solid horizontal linear color wave.
-  * *Console Preview:* ![Rainbow Preview](previews/rainbow.svg)
 * 🚯 `debug.style.reset` — **Dynamic Brand Restore Token**
   * *Appearance:* Evaluates dynamically on the fly to match your wrapper's primary theme.
   * *Usage:* Restores mid-sentence strings safely back to your level colors instead of stripping them down to browser defaults.
-* ✅ `debug.style.success` — **Confirmation Milestones**
+* ✅ `debug.style.success` — **Confirmation Milestones** <img src="previews/success.svg" height="28" align="right" />
   * *Appearance:* Bright, crisp neon emerald green text.
-  * *Console Preview:* ![Success Preview](previews/success.svg)
-* 🏷️ `debug.style.tag` — **`[myAppName v#.#.#]` Banner**
+* 🏷️ `debug.style.tag` — **`[myAppName v#.#.#]` Banner** <img src="previews/tag.svg" height="28" align="right" />
   * *Appearance:* Bold magenta text resting over a flat pitch-black background plate.
-  * *Console Preview:* ![Tag Preview](previews/tag.svg)
-* ⏱️ `debug.style.time` — **Timestamp Tag**
+* ⏱️ `debug.style.time` — **Timestamp Tag** <img src="previews/time.svg" height="28" align="right" />
   * *Appearance:* Bold dark-red text resting over a standard slate charcoal background plate.
-  * *Console Preview:* ![Time Preview](previews/time.svg)
-
+* ⚠️ `debug.style.warn` — **Standard System Warning** <img src="previews/warn.svg" height="28" align="right" />
+  * *Appearance:* Thick, high-contrast goldenrod yellow font face.
 
 ### `debug.console( message, ...args )`
  - Routes logs into your standard target channel stream (defaulting to low-priority diagnostic streams).
