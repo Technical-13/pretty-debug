@@ -1,12 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 32" width="100%" height="100%">
-  <style>
-    .bg { fill: #0D1117; }
-    .fatal-text { font-family: monospace; font-size: 13px; font-weight: bold; fill: #FFEE55; }
-    .fatal-bg { fill: #880000; }
-  </style>
-  <rect width="100%" height="100%" class="bg" rx="4" />
-  <g transform="translate(6, 6)">
-    <rect width="428" height="20" class="fatal-bg" rx="3" />
-    <text x="8" y="14" class="fatal-text">CRITICAL EXCEPTION PANIC: CORE SHUTDOWN INITIATED</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370 28" width="370" height="28">
+  <rect width="100%" height="100%" fill="#0D1117" stroke="#444C56" stroke-width="1" rx="4" />
+  <rect x="5" y="5" width="360" height="18" fill="#880000" rx="3" />
+  <text x="12" y="18" font-family="monospace" font-size="12" font-weight="bold" fill="#FFEE55">CRITICAL EXCEPTION PANIC: CORE SHUTDOWN INITIATED</text>
 </svg>
