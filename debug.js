@@ -32,8 +32,10 @@
         logParams.push( this._styles.time );
       }      
       const formatStr = tagStr + timeStr + ( tagStr || timeStr ? ' ' : '' ) + '%c' + message;
-      logParams.push( this._styles[ type ] );
-      console[ channel ]( formatStr, ...logParams, ...args );
+      const baseStyle = this._styles[ type ] || this._styles.log;
+      logParams.push( baseStyle );
+      const mappedArgs = args.map( ( arg ) => { return arg === '🚯' ? baseStyle : arg; } );
+      console[ channel ]( formatStr, ...logParams, ...mappedArgs );
     }
 
     /**
@@ -54,7 +56,6 @@
 
     /**
      * Dynamically pulls the core identity configuration branding title sequence.
-     * Uses environment name as a fallback if not provided and it can't be detected.
      *
      * @private
      * @param {Object} config The custom operational initialization settings object.
@@ -64,14 +65,13 @@
 
     /**
      * Evaluates available execution managers to find current code version metrics.
-     * Uses environment version as a fallback if not provided and it can't be detected.
      *
      * @private
      * @param {Object} config The custom operational initialization settings object.
      * @returns {string} The parsed software release version sequence token string.
      */
     _getVersion( config ) {
-      const envVer = this._env === 'Node.js' ? process.version.slice( 1 ) : ( globalThis.GM?.info?.version || globalThis.GM_info?.version || '0.0.1' );
+      const envVer = this._env === 'Node.js' ? process.version.slice( 1 ) : ( globalThis.GM?.info?.version || globalThis.GM_info?.version || '0.0.0' );
       return config.version || globalThis.GM?.info?.script?.version || globalThis.GM_info?.script?.version || envVer;
     }
 
@@ -80,12 +80,12 @@
      *
      * @constructor
      * @param {Object} [config={}] The custom operational initialization settings.
-     * @param {string} [config.logChan=''] Explicit channel routing token key console.(debug|info|warn|error|log).
-     * @param {string} [config.name='myCoolApp'] App branding identity label text.
-     * @param {boolean} [config.showTag=true] Toggle switch for [myCoolApp v0.0.1] tag.
+     * @param {string} [config.logChan=''] Explicit channel routing token key.
+     * @param {string} [config.name='App'] App branding identity label text.
+     * @param {boolean} [config.showTag=true] Toggle switch for metadata bracket row.
      * @param {boolean} [config.showTime=true] Toggle switch for runtime timestamp logs.
      * @param {Object} [config.styles] Collection of custom theme design styling paths.
-     * @param {string} [config.version='0.0.1'] Manual software layer version string.
+     * @param {string} [config.version='0.0.0'] Manual software layer version string.
      */
     constructor( config = {} ) {
       this._chan = config.logChan || '';
@@ -94,14 +94,16 @@
       this._showTag = config.showTag || true;
       this._showTime = config.showTime || true;
       this._styles = config.styles || {
+        debug: 'color: #888888;',
         error: 'color: #FF3333; font-weight: bold;',
         fatal: 'color: #FFEE55; background: #880000; font-weight: bold; padding: 2px; border-radius: 2px;',
-        info: 'color: #00E6FF; font-weight: bold;',
+        info: 'color: #1188FF; font-weight: bold;',
         log: 'color: inherit;',
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
-        perf: 'color: #FFA500; font-weight: bold; font-family: monospace;',
+        rainbow: 'background: linear-gradient(90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
+        reset: '🚯',
         success: 'color: #00FF66; font-weight: bold;',
-        tag: 'color: #FFFFFF; background: #333333; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
+        tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
         time: 'color: #FF0000; background: #333333; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
         warn: 'color: #FFEE55; font-weight: bold;'
       };
@@ -145,6 +147,38 @@
     fatal( message, ...args ) { this._execute( 'fatal', message, ...args ); }
 
     /**
+     * Initiates an expandable nested data stream group block inside the panel views.
+     *
+     * @public
+     * @param {string} label The text title header to assign to the block group.
+     * @returns {void}
+     * @example
+     * debug.group( 'Leaderboard Update Cycle' );
+     */
+    group( label ) { console.group( label ); }
+
+    /**
+     * Initiates a collapsed nested data stream group block inside the panel views.
+     *
+     * @public
+     * @param {string} label The text title header to assign to the block group.
+     * @returns {void}
+     * @example
+     * debug.groupCollapsed( 'Detailed Payload Metrics' );
+     */
+    groupCollapsed( label ) { console.groupCollapsed( label ); }
+
+    /**
+     * Terminates the current active nested tree logging indentation layer block.
+     *
+     * @public
+     * @returns {void}
+     * @example
+     * debug.groupEnd();
+     */
+    groupEnd() { console.groupEnd(); }
+
+    /**
      * Transmits standard status data updates into the targeted monitoring pipeline.
      *
      * @public
@@ -181,16 +215,12 @@
     network( message, ...args ) { this._execute( 'network', message, ...args ); }
 
     /**
-     * Outputs execution speed benchmarks and frame calculation metrics.
+     * Exposes the active design theme style configurations collection dictionary.
      *
      * @public
-     * @param {string} message The performance metric measurement summary text.
-     * @param {...*} args Trailing duration digits, benchmarks, or memory maps.
-     * @returns {void}
-     * @example
-     * debug.perf( 'Leaderboard array processing completed in %d ms', delta );
+     * @returns {Object} The read-only color configuration styles asset map.
      */
-    perf( message, ...args ) { this._execute( 'perf', message, ...args ); }
+    get style() { return this._styles; }
 
     /**
      * Generates a highlighted positive processing confirmation log line response.
@@ -205,6 +235,51 @@
     success( message, ...args ) { this._execute( 'success', message, ...args ); }
 
     /**
+     * Starts a high-accuracy system stopwatch timer tracking a unique reference key token.
+     *
+     * @public
+     * @param {string} label Identity reference key to associate with the timer tracking.
+     * @returns {void}
+     * @example
+     * debug.time( 'dbFetchTransaction' );
+     */
+    time( label ) { console.time( label ); }
+
+    /**
+     * Concludes a stopwatch timer loop tracking run and outputs elapsed delta milliseconds.
+     *
+     * @public
+     * @param {string} label Identity reference key of the timer loop tracker to end.
+     * @returns {void}
+     * @example
+     * debug.timeEnd( 'dbFetchTransaction' );
+     */
+    timeEnd( label ) { console.timeEnd( label ); }
+
+    /**
+     * Prints the current value of an active system timer without stopping it.
+     *
+     * @public
+     * @param {string} label Identity reference key of the running timer tracker.
+     * @param {...*} [args] Optional data variables or tracking objects to print alongside the log.
+     * @returns {void}
+     * @example
+     * debug.timeLog( 'leaderboardProcessing', 'Completed page 1 parsing check' );
+     */
+    timeLog( label, ...args ) { console.timeLog( label, ...args ); }
+
+    /**
+     * Outputs a complete interactive stack trace detailing the execution path.
+     *
+     * @public
+     * @param {...*} [args] Optional message items or data payloads to label the trace.
+     * @returns {void}
+     * @example
+     * debug.trace( 'Diagnostic checkpoint trace tracking location:' );
+     */
+    trace( ...args ) { console.trace( ...args ); }
+
+    /**
      * Signals standard boundary alerts and validation timeouts without freezing tasks.
      *
      * @public
@@ -215,6 +290,7 @@
      * debug.warn( 'Network delay detected on path: %s. Retry count: %d', endpointUrl, retries );
      */
     warn( message, ...args ) { this._execute( 'warn', message, ...args ); }
+  }
 
   global.Debug = Debug;
 } )( this );
