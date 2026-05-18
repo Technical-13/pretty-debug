@@ -1,12 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 32" width="100%" height="100%">
-  <style>
-    .bg { fill: #0D1117; }
-    .time-text { font-family: monospace; font-size: 13px; font-weight: bold; fill: #FF0000; }
-    .time-bg { fill: #333333; }
-  </style>
-  <rect width="100%" height="100%" class="bg" rx="4" />
-  <g transform="translate(6, 6)">
-    <rect width="238" height="20" class="time-bg" rx="3" />
-    <text x="8" y="14" class="time-text">[2026-05-18T16:50:00.000Z]</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 28" width="220" height="28">
+  <rect width="100%" height="100%" fill="#0D1117" stroke="#444C56" stroke-width="1" rx="4" />
+  <rect x="5" y="5" width="210" height="18" fill="#333333" rx="3" />
+  <text x="12" y="18" font-family="monospace" font-size="12" font-weight="bold" fill="#FF0000">[2026-05-18T16:50:00.000Z]</text>
 </svg>
