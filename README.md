@@ -65,7 +65,7 @@ debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style
 #### Available Default Theme Styles
 * ⚙️ `debug.style.debug` — **Standard Console Channel**
   * *Appearance:* Flat, muted medium-gray text designed for low-priority diagnostics.
-  * *Console Preview:* ![Debug Preview](previews/debug.svg)
+  * *Console Preview:* ![Debug Preview](./previews/debug.svg)
 * ❌ `debug.style.error` — **Standard Error Line**
   * *Appearance:* Thick, high-visibility crimson red font face.
   * *Console Preview:* ![Error Preview](previews/error.svg)
