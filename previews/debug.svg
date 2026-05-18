@@ -1,8 +1,4 @@
-<svg xmlns="http://w3.org" viewBox="0 0 400 32" width="100%" height="100%">
-  <style>
-    .bg { fill: #0D1117; }
-    .text-channel { font-family: monospace; font-size: 13px; font-weight: normal; fill: #888888; }
-  </style>
-  <rect width="100%" height="100%" class="bg" rx="4" />
-  <text x="12" y="20" class="text-channel">Low-impact telemetry memory window dump.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 32" width="400" height="32">
+  <rect width="100%" height="100%" fill="#0D1117" rx="4" />
+  <text x="12" y="20" font-family="monospace" font-size="13" font-weight="normal" fill="#888888">Low-impact telemetry memory window dump.</text>
 </svg>
