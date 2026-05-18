@@ -17,12 +17,12 @@ A tiny, cross-platform JavaScript debug console featuring custom color styles an
 Instantiate the debug instance at the top of your execution wrapper. You can configure custom settings or leave it empty to rely on our automatic environment discovery rules:
 ```javascript
 const debug = new Debug( {
-  name: 'myCoolUserscript',
-  version: '0.0.1',         // Optional: defaults to auto-detected script or env version
-  logChan: 'debug',         // Optional: choose 'debug', 'info', 'log', etc. Defaults to 'debug' with 'info' fallback.
-  showTag: true,            // Optional: toggle switch for [myCoolUserScript v0.0.1] tag. Defaults to true.
-  showTime: true,           // Optional: toggle the live system timestamp bracket. Defaults to true.
-  styles: {                 // Optional: override any default color palette styles
+  name: 'myCoolUserscript', // All settings below are optional:
+  version: '0.0.1',         // Defaults to auto-detected script or env version
+  logChan: 'debug',         // Choose 'error', 'log', 'warn', etc. Fallback: 'debug' with 'info'
+  showTag: true,            // Toggle switch for [myCoolUserScript v0.0.1] tag. Defaults to true.
+  showTime: true,           // Toggle the live system timestamp bracket. Defaults to true.
+  styles: {                 // Override any default color palette styles
     halloween: 'color: #00FFFF; background: #000000; font-weight: bold;'
   }
 } );
