@@ -1,3 +1,16 @@
+// ==UserScript==
+// @name         pretty-debug
+// @namespace    https://github.com/Technical-13/pretty-debug
+// @version      1.0.0
+// @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
+// @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
+// @license      BSD-3-Clause
+// @homepageURL  https://github.com/Technical-13/pretty-debug
+// @supportURL   https://discord.me/MagentaRV
+// @downloadURL  https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js
+// @updateURL    https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js
+// ==/UserScript==
+
 ( function( global ) {
   'use strict';
 
