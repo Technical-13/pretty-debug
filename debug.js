@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.3
+// @version      1.0.4
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -34,7 +34,9 @@
      */
     _execute( type, message, ...args ) {
       const channel = typeof console[ this._chan ] === 'function' ? this._chan : typeof console.debug === 'function' ? 'debug' : 'info';
-      const baseStyle = this._styles[ type + ( ( this._isDark ? '' : this._styles[ type + 'Light' ] ? 'Light' : '' ) ) ];
+      const baseDarkStyle = this._validateStyle( type ) ? type : 'debug';
+      const baseLightStyle = this._validateStyle( type + 'Light' ) ? type + 'Light' : 'debugLight';
+      const baseStyle = this._styles[ this._isDark ? baseDarkStyle : baseLightStyle ];
       let tagStr = '', timeStr = ''; const logParams = [];
       if ( this._showTag ) {
         tagStr = '%c[' + this._name + ' v' + this._version + ']';
@@ -47,7 +49,7 @@
       const { [ type ]: icon } = this._chanIcons;
       const formatStr = ( icon ? icon + ' ' : '' ) + tagStr + timeStr + ( tagStr || timeStr ? ' ' : '' ) + '%c' + message;
       logParams.push( baseStyle );
-      const mappedArgs = args.map( ( arg ) => { return arg === '🚯' ? baseStyle : arg; } );
+      const mappedArgs = args.map( ( arg ) => { return arg === '🚯' ? baseStyle : ( this._validateStyle( arg ) ? this._styles[ arg ] : arg ); } );
       console[ channel ]( formatStr, ...logParams, ...mappedArgs );
     }
 
@@ -115,6 +117,15 @@
      * @returns {boolean} A true value if dark theme states match; otherwise false.
      */
     _isDarkMode() { return this._hasDataTheme() === 'Dark' ? true : false; }
+
+    /**
+     * Verifies a style is defined in `this._styles`.
+     *
+     * @private
+     * @param {string} name The style name to check for.
+     * @returns {boolean} A true value if style exists; otherwise false.
+     */
+    _validateStyle( name ) { return this._styles[ name ] ? true : false; }
 
     /**
      * Instantiates an active individual configuration tracker profile model.
@@ -269,12 +280,12 @@
     network( message, ...args ) { this._execute( 'network', message, ...args ); }
 
     /**
-     * Exposes the active design theme style configurations collection dictionary.
+     * Exposes a protected proxy wrapper around the active design theme style configurations dictionary.
      *
      * @public
-     * @returns {Object} The read-only color configuration styles asset map.
+     * @returns {Proxy<Object>} A proxy trapping missing style property requests and defaulting to 'debug' layout.
      */
-    get style() { return this._styles; }
+    get style() { return new Proxy( this._styles, { get: ( target, prop ) => { return target[ prop ] || target.debug; } } ); }
 
     /**
      * Generates a highlighted positive processing confirmation log line response.
