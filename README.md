@@ -9,9 +9,10 @@ A tiny, cross-platform JavaScript debug console featuring custom color styles an
 
 ## Installation & Setup
 ### 1. Userscript Managers ([Greasemonkey](https://greasemonkey.en.softonic.com)|[Tampermonkey](https://www.tampermonkey.net)|[Violentmonkey](https://violentmonkey.github.io/))
- - Simply add the raw branch link to your userscript metadata header block:
+ - Using a centralized mirror platform ensures your project instances automatically pull patches and updates without requiring manual branch pulls.
+ - Simply add the mirrored GreasyFork CDN link to your userscript metadata header block:
 ```javascript
-// @require      https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js
+// @require      https://update.greasyfork.org/scripts/578789/pretty-debug.js
 ```
  - Initialization Configuration
 Instantiate the debug instance at the top of your execution wrapper. You can configure custom settings or leave it empty to rely on our automatic environment discovery rules:
