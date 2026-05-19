@@ -2,10 +2,14 @@
 A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 
 ## Features
-* 👤 **Automatic Environment Detection:** Intelligently identifies if it is running inside Tampermonkey, Violentmonkey, Greasemonkey, Node.js, or directly in a Browser Console.
-* 🌈 **CSS Colored Output:** Leverages console substitution tokens (`%c`) to provide rich, visual logging tiers without cluttering your core logic lines.
-* 🛡️ **Sandbox Safe:** Free of global object pollutions—ideal for isolated userscript execution blocks or browser extension frames.
-* ⚙️ **Highly Configurable:** Easily toggle metadata tags, live system timestamps, or route messages to custom developer streams.
+* 👤 **Automatic Environment Detection:**
+  * Intelligently identifies if it is running inside Tampermonkey, Violentmonkey, Greasemonkey, Node.js, or directly in a Browser Console.
+* 🌈 **CSS Colored Output:**
+  * Leverages console substitution tokens (`%c`) to provide rich, visual logging tiers without cluttering your core logic lines.
+* 🛡️ **Sandbox Safe:**
+  * Free of global object pollutions—ideal for isolated userscript execution blocks or browser extension frames.
+* ⚙️ **Highly Configurable:**
+  * Easily toggle metadata tags, live system timestamps, or route messages to custom developer streams.
 
 ## Installation & Setup
 ### 1. Userscript Managers ([Greasemonkey](https://greasemonkey.en.softonic.com)|[Tampermonkey](https://www.tampermonkey.net)|[Violentmonkey](https://violentmonkey.github.io/))
@@ -23,7 +27,7 @@ const debug = new Debug( {
   logChan: 'debug',         // Choose 'error', 'log', 'warn', etc. Fallback: 'debug' with 'info'
   showTag: true,            // Toggle switch for [myCoolUserScript v0.0.1] tag. Defaults to true.
   showTime: true,           // Toggle the live system timestamp bracket. Defaults to true.
-  styles: {                 // Override any default color palette styles
+  styles: {                 // Add custom and override default color palette styles
     halloween: 'color: #00FFFF; background: #000000; font-weight: bold;'
   }
 } );
@@ -43,28 +47,31 @@ debug.success(
 ```
 
 ### 3. Browser Console Context
-To run diagnostics or test features directly inside your browser developer tools (`F12`), paste this snippet into your Console tab to dynamically inject and instantiate the library instantly:
+ - To run diagnostics or test features directly inside your browser developer tools (`F12`), paste this snippet into your Console tab to dynamically inject and instantiate the library instantly:
 
 ```javascript
 fetch( 'https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js' )
-  .then( res => res.text() )
-  .then( code => {
-    eval( code );
-    window.debug = new Debug( { name: 'devTools', logChan: 'log' } );
-    debug.success(
-      '%cpretty-debug%c successfully injected globally into this tab!',
-      debug.style.rainbow,
-      debug.style.reset
-    );
+  .then( ( res ) => { return res.text(); } )
+  .then( ( code ) => {
+    const script = document.createElement( 'script' );
+    script.textContent = code;
+    document.documentElement.appendChild( script );
+    script.remove();
+    window.debug = new Debug();
+    debug.success( '%cpretty-debug%c successfully injected globally into this tab! Docs: https://github.com/Technical-13/pretty-debug', debug.style.rainbow, debug.style.reset );
   } );
 ```
+
+> [!WARNING]
+> **Security Configuration Note:** This execution snippet will fail to run inside highly privileged, built-in browser tabs. These special internal portal pages — including, but not limited to, Firefox's `about:newtab`, Google Chrome's `chrome://newtab`, and Microsoft Edge's `edge://newtab` — deploy strict Content Security Policies (`default-src 'none'`) that block all external network fetches and string code evaluation requests (`eval`) instantly. For a comprehensive technical reference detailing why modern browser engines prevent top-level scripts and tracking links from initializing across internal application sandboxes, see the official [MDN Content Security Policy (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP) and review the complete [Chrome for Developers: Content Security Policy](https://developer.chrome.com/docs/privacy-security/csp). To perform console diagnostic injections safely without encountering engine protection locks, navigate your active tab layout context onto a standard external web page or an unrestricted clean destination like [`about:blank`](https://enwp.org/About_URI_scheme).
 
 ## Usage API
  - Once initialized, call your specific logging levels directly from your application logic. Every method supports [console string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#using_string_substitutions) tokens and infinite trailing arguments:
  - If you need to style a specific string slice mid-sentence, pass public `debug.style` properties into your arguments array. Use `debug.style.reset` to smoothly restore your text colors right back to the method's native brand theme!
 
 ### Advanced Styling: `debug.style`
-The public `debug.style` property exposes your active theme dictionary as a read-only object. To style specific pieces of text *inside* a log sentence, insert multiple `%c` substitution markers into your message string, and pass your chosen styles sequentially inside the trailing variables array:
+ - The public `debug.style` property exposes your active theme dictionary as a read-only proxy validated object that defaults to `debug.style.debug` if the specified style is `undefined`.
+ - To style specific pieces of text *inside* a log sentence, insert multiple `%c` substitution markers into your message string, and pass your chosen styles sequentially inside the trailing variables array:
 
 ```javascript
 debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style.warn, debug.style.reset);
