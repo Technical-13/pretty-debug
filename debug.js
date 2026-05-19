@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.0
+// @version      1.0.1
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -108,9 +108,9 @@
       this._showTime = config.showTime || true;
       this._styles = config.styles || {
         debug: 'color: #888888;',
-        error: 'color: #FF3333; font-weight: bold;',
+        error: 'color: #FFB3D2; background: #4B2F36; font-weight: bold;',
         fatal: 'color: #FFEE55; background: #880000; font-weight: bold; padding: 2px; border-radius: 2px;',
-        info: 'color: #1188FF; font-weight: bold;',
+        info: 'color: #D7D7DB; background: #232327; font-weight: bold;',
         log: 'color: inherit;',
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
         rainbow: 'background: linear-gradient(90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
@@ -118,7 +118,7 @@
         success: 'color: #00FF66; font-weight: bold;',
         tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
         time: 'color: #FF0000; background: #333333; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
-        warn: 'color: #FFEE55; font-weight: bold;'
+        warn: 'color: #FCE2A1; background: #42381F; font-weight: bold;'
       };
       this._version = this._getVersion( config );
     }
