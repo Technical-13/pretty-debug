@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.2
+// @version      1.0.3
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
 // @homepageURL  https://github.com/Technical-13/pretty-debug
 // @supportURL   https://discord.me/MagentaRV
-// @downloadURL  https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js
-// @updateURL    https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/main/debug.js
 // ==/UserScript==
 
 ( function( global ) {
@@ -24,6 +22,7 @@
    * debug.success( 'Earning pipeline initialized perfectly.' );
    */
   class Debug {
+
     /**
      * Compiles dynamic substitution strings and handles channel routing passes.
      *
@@ -35,17 +34,18 @@
      */
     _execute( type, message, ...args ) {
       const channel = typeof console[ this._chan ] === 'function' ? this._chan : typeof console.debug === 'function' ? 'debug' : 'info';
+      const baseStyle = this._styles[ type + ( ( this._isDark ? '' : this._styles[ type + 'Light' ] ? 'Light' : '' ) ) ];
       let tagStr = '', timeStr = ''; const logParams = [];
       if ( this._showTag ) {
         tagStr = '%c[' + this._name + ' v' + this._version + ']';
-        logParams.push( this._styles.tag );
-      }      
+        logParams.push( this._styles[ this._isDark ?  'tag' : 'tagLight' ] );
+      }
       if ( this._showTime ) {
         timeStr = '%c[' + new Date().toISOString() + ']';
-        logParams.push( this._styles.time );
-      }      
-      const formatStr = tagStr + timeStr + ( tagStr || timeStr ? ' ' : '' ) + '%c' + message;
-      const baseStyle = this._styles[ type ] || this._styles.log;
+        logParams.push( this._styles[ this._isDark ? 'time' : 'timeLight' ] );
+      }
+      const { [ type ]: icon } = this._chanIcons;
+      const formatStr = ( icon ? icon + ' ' : '' ) + tagStr + timeStr + ( tagStr || timeStr ? ' ' : '' ) + '%c' + message;
       logParams.push( baseStyle );
       const mappedArgs = args.map( ( arg ) => { return arg === '🚯' ? baseStyle : arg; } );
       console[ channel ]( formatStr, ...logParams, ...mappedArgs );
@@ -91,64 +91,75 @@
     /**
      * Evaluates light/dark day/night data color scheme for environment.
      * @private
-     * @returns {string} The parsed data theme ('light' or 'dark').
+     * @returns {string} The parsed data theme ('Light' or 'Dark').
      */
-    _isDataTheme() {
+    _hasDataTheme() {
       if ( typeof window !== 'undefined' && typeof window.matchMedia === 'function' ) {
-        if ( window.matchMedia( '(prefers-color-scheme: light)' ).matches ) { return 'light'; }
+        if ( window.matchMedia( '(prefers-color-scheme: light)' ).matches ) { return 'Light'; }
       }
       if ( typeof process !== 'undefined' && process.env ) {
         const colorScheme = process.env.COLORFGBG;
         if ( colorScheme ) {
           const parts = colorScheme.split( ';' );
           const bg = parseInt( parts[ 0 ], 10 );
-          if ( !isNaN( bg ) && ( bg === 7 || bg >= 11 ) ) { return 'light'; }
+          if ( !isNaN( bg ) && ( bg === 7 || bg >= 11 ) ) { return 'Light'; }
         }
       }
-      return 'dark';
+      return 'Dark';
     }
-    
+
+    /**
+     * Verifies if the interface color scheme evaluation indicates an active dark mode.
+     *
+     * @private
+     * @returns {boolean} A true value if dark theme states match; otherwise false.
+     */
+    _isDarkMode() { return this._hasDataTheme() === 'Dark' ? true : false; }
+
     /**
      * Instantiates an active individual configuration tracker profile model.
      *
      * @constructor
      * @param {Object} [config={}] The custom operational initialization settings.
      * @param {string} [config.logChan=''] Explicit channel routing token key.
-     * @param {string} [config.name='App'] App branding identity label text.
+     * @param {Object} [config.icons] Collection of custom prefix icons for channel types.
+     * @param {string} [config.name='myCoolApp'] App branding identity label text.
      * @param {boolean} [config.showTag=true] Toggle switch for metadata bracket row.
      * @param {boolean} [config.showTime=true] Toggle switch for runtime timestamp logs.
      * @param {Object} [config.styles] Collection of custom theme design styling paths.
-     * @param {string} [config.version='0.0.0'] Manual software layer version string.
+     * @param {string} [config.version='0.0.1'] Manual software layer version string.
      */
     constructor( config = {} ) {
       this._chan = config.logChan || '';
+      this._chanIcons = config.icons || { error: '🚫', fatal: '❌', network: '🌐', success: '✅', warn: '⚠️' };
       this._env = this._getEnv();
+      this._isDark = this._isDarkMode() ?? true;
       this._name = this._getName( config );
-      this._showTag = config.showTag || true;
-      this._showTime = config.showTime || true;
+      this._showTag = config.showTag ?? true;
+      this._showTime = config.showTime ?? true;
       this._styles = config.styles || {
-        debug: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px; width: 100%;',
-        debugLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px; width: 100%;',
-        error: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px; width: 100%;',
-        errorLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px; width: 100%;',
+        debug: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px;',
+        debugLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px;',
+        error: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px;',
+        errorLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px;',
         fatal: 'color: #FFEE55; background: #880000; font-weight: bold; padding: 2px; border-radius: 2px;',
-        info: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px; width: 100%;',
-        infoLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px; width: 100%;',
-        group: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold; width: 100%;',
-        groupLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold; width: 100%;',
-        log: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
-        logLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',
+        info: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px;',
+        infoLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px;',
+        group: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold;',
+        groupLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold;',
+        log: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        logLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
         rainbow: 'background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
         reset: '🚯',
         success: 'color: #00FF66; font-weight: bold;',
         tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
-        time: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
-        timeLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',
-        trace: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
-        traceLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',        
-        warn: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px; width: 100%;',
-        warnLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px; width: 100%;'
+        time: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        timeLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
+        trace: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        traceLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
+        warn: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px;',
+        warnLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px;'
       };
       this._version = this._getVersion( config );
     }
@@ -175,7 +186,7 @@
      * @example
      * debug.error( 'IndexedDB transaction locked. Event: %o', errorEvent );
      */
-    error( message, ...args ) { this._execute( 'error', '🚫 ' + message, ...args ); }
+    error( message, ...args ) { this._execute( 'error', message, ...args ); }
 
     /**
      * Routes high-impact unrecoverable execution panics to the console stream.
@@ -187,7 +198,7 @@
      * @example
      * debug.fatal( 'Critical engine shutdown. Core exception: %o', errorObject );
      */
-    fatal( message, ...args ) { this._execute( 'fatal', '❌ ' + message, ...args ); }
+    fatal( message, ...args ) { this._execute( 'fatal', message, ...args ); }
 
     /**
      * Initiates an expandable nested data stream group block inside the panel views.
@@ -255,7 +266,7 @@
      * @example
      * debug.network( 'Intercepted fetch response from path: %s', urlString );
      */
-    network( message, ...args ) { this._execute( 'network', '🌐 ' + message, ...args ); }
+    network( message, ...args ) { this._execute( 'network', message, ...args ); }
 
     /**
      * Exposes the active design theme style configurations collection dictionary.
@@ -275,7 +286,7 @@
      * @example
      * debug.success( 'Map coordinates synced. Total items: %d', totalCount );
      */
-    success( message, ...args ) { this._execute( 'success', '✅ ' + message, ...args ); }
+    success( message, ...args ) { this._execute( 'success', message, ...args ); }
 
     /**
      * Starts a high-accuracy system stopwatch timer tracking a unique reference key token.
@@ -332,7 +343,7 @@
      * @example
      * debug.warn( 'Network delay detected on path: %s. Retry count: %d', endpointUrl, retries );
      */
-    warn( message, ...args ) { this._execute( 'warn', '⚠️ ' + message, ...args ); }
+    warn( message, ...args ) { this._execute( 'warn', message, ...args ); }
   }
 
   global.Debug = Debug;
