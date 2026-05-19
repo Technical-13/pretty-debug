@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.1
+// @version      1.0.2
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -89,6 +89,26 @@
     }
 
     /**
+     * Evaluates light/dark day/night data color scheme for environment.
+     * @private
+     * @returns {string} The parsed data theme ('light' or 'dark').
+     */
+    _isDataTheme() {
+      if ( typeof window !== 'undefined' && typeof window.matchMedia === 'function' ) {
+        if ( window.matchMedia( '(prefers-color-scheme: light)' ).matches ) { return 'light'; }
+      }
+      if ( typeof process !== 'undefined' && process.env ) {
+        const colorScheme = process.env.COLORFGBG;
+        if ( colorScheme ) {
+          const parts = colorScheme.split( ';' );
+          const bg = parseInt( parts[ 0 ], 10 );
+          if ( !isNaN( bg ) && ( bg === 7 || bg >= 11 ) ) { return 'light'; }
+        }
+      }
+      return 'dark';
+    }
+    
+    /**
      * Instantiates an active individual configuration tracker profile model.
      *
      * @constructor
@@ -107,18 +127,28 @@
       this._showTag = config.showTag || true;
       this._showTime = config.showTime || true;
       this._styles = config.styles || {
-        debug: 'color: #888888;',
-        error: 'color: #FFB3D2; background: #4B2F36; font-weight: bold;',
+        debug: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px; width: 100%;',
+        debugLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px; width: 100%;',
+        error: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px; width: 100%;',
+        errorLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px; width: 100%;',
         fatal: 'color: #FFEE55; background: #880000; font-weight: bold; padding: 2px; border-radius: 2px;',
-        info: 'color: #D7D7DB; background: #232327; font-weight: bold;',
-        log: 'color: inherit;',
+        info: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px; width: 100%;',
+        infoLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px; width: 100%;',
+        group: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold; width: 100%;',
+        groupLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold; width: 100%;',
+        log: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
+        logLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
-        rainbow: 'background: linear-gradient(90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
+        rainbow: 'background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
         reset: '🚯',
         success: 'color: #00FF66; font-weight: bold;',
         tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
-        time: 'color: #FF0000; background: #333333; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
-        warn: 'color: #FCE2A1; background: #42381F; font-weight: bold;'
+        time: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
+        timeLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',
+        trace: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; width: 100%;',
+        traceLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; width: 100%;',        
+        warn: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px; width: 100%;',
+        warnLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px; width: 100%;'
       };
       this._version = this._getVersion( config );
     }
@@ -145,7 +175,7 @@
      * @example
      * debug.error( 'IndexedDB transaction locked. Event: %o', errorEvent );
      */
-    error( message, ...args ) { this._execute( 'error', message, ...args ); }
+    error( message, ...args ) { this._execute( 'error', '🚫 ' + message, ...args ); }
 
     /**
      * Routes high-impact unrecoverable execution panics to the console stream.
@@ -157,7 +187,7 @@
      * @example
      * debug.fatal( 'Critical engine shutdown. Core exception: %o', errorObject );
      */
-    fatal( message, ...args ) { this._execute( 'fatal', message, ...args ); }
+    fatal( message, ...args ) { this._execute( 'fatal', '❌ ' + message, ...args ); }
 
     /**
      * Initiates an expandable nested data stream group block inside the panel views.
@@ -225,7 +255,7 @@
      * @example
      * debug.network( 'Intercepted fetch response from path: %s', urlString );
      */
-    network( message, ...args ) { this._execute( 'network', message, ...args ); }
+    network( message, ...args ) { this._execute( 'network', '🌐 ' + message, ...args ); }
 
     /**
      * Exposes the active design theme style configurations collection dictionary.
@@ -245,7 +275,7 @@
      * @example
      * debug.success( 'Map coordinates synced. Total items: %d', totalCount );
      */
-    success( message, ...args ) { this._execute( 'success', message, ...args ); }
+    success( message, ...args ) { this._execute( 'success', '✅ ' + message, ...args ); }
 
     /**
      * Starts a high-accuracy system stopwatch timer tracking a unique reference key token.
@@ -302,7 +332,7 @@
      * @example
      * debug.warn( 'Network delay detected on path: %s. Retry count: %d', endpointUrl, retries );
      */
-    warn( message, ...args ) { this._execute( 'warn', message, ...args ); }
+    warn( message, ...args ) { this._execute( 'warn', '⚠️ ' + message, ...args ); }
   }
 
   global.Debug = Debug;
