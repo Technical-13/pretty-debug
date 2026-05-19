@@ -70,17 +70,21 @@ debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style
 ```
 
 #### Available Default Theme Styles
-
+ - Theme variations automatically adapt on initialization to look clean in dark/light environments when light theme channel counterparts exist.
 * ⚙️ `debug.style.debug` — **Standard Console Channel** <img src="previews/debug.svg" height="28" align="right" />
-  * *Appearance:* Flat, muted medium-gray text designed for low-priority diagnostics.
-* ❌ `debug.style.error` — **Standard Error Line**<img src="previews/error.svg" height="28" align="right" />
-  * *Appearance:* Thick, high-visibility crimson red font face.
-* 🚨 `debug.style.fatal` — **Critical System Panic** <img src="previews/fatal.svg" height="28" align="right" />
+  <!--* ⚙️ `debug.style.debugLight` — **Standard Console Channel** (light mode) <img src="previews/debugLight.svg" height="28" align="right" />-->
+  * *Appearance:* Flat, muted medium-gray text resting over an inverted theme-adaptive background plate designed for low-priority diagnostics.
+* 🚫 `debug.style.error` — **Standard Error Line**<img src="previews/error.svg" height="28" align="right" />
+  <!--* 🚫 `debug.style.errorLight` — **Standard Error Line** (light mode) <img src="previews/errorLight.svg" height="28" align="right" />-->
+  * *Appearance:* High-visibility crimson red font resting over an adaptive, high-contrast tinted red background panel with distinct line borders.
+* ❌ `debug.style.fatal` — **Critical System Panic** <img src="previews/fatal.svg" height="28" align="right" />
   * *Appearance:* Thick pale yellow font face isolated over a solid blood-red background bar.
 * 🔷 `debug.style.info` — **Informational Messages** <img src="previews/info.svg" height="28" align="right" />
-  * *Appearance:* Vibrant, professional high-contrast deep corporate blue text.
-* ✉️ `debug.style.log` — **Raw Baseline Text** <img src="previews/log.svg" height="28" align="right" />
-  * *Appearance:* Completely clean, unstyled font properties that inherit browser environments natively.
+  <!--* 🔷 `debug.style.infoLight` — **Informational Messages** (light mode) <img src="previews/infoLight.svg" height="28" align="right" />-->
+  * *Appearance:* High-contrast corporate blue-spectrum font resting over a tinted blue background panel with matching borders.
+* 📜 `debug.style.log` — **Raw Baseline Text** <img src="previews/log.svg" height="28" align="right" />
+  <!--* 📜 `debug.style.logLight` — **Raw Baseline Text** (light mode) <img src="previews/logLight.svg" height="28" align="right" />-->
+  * *Appearance:* Completely clean font properties that inherit browser text colors natively over an inverted theme-adaptive background plate.
 * 🌐 `debug.style.network` — **Interceptor Telemetry** <img src="previews/network.svg" height="28" align="right" />
   * *Appearance:* Slanted, italicized electric cyan font face.
 * 🌈 `debug.style.rainbow` — **1990's Throwback Spectrum** <img src="previews/rainbow.svg" height="28" align="right" />
@@ -93,9 +97,11 @@ debug.info( 'Task status: %cRUNNING%c. Stand by for server sync...', debug.style
 * 🏷️ `debug.style.tag` — **`[myAppName v#.#.#]` Banner** <img src="previews/tag.svg" height="28" align="right" />
   * *Appearance:* Bold magenta text resting over a flat pitch-black background plate.
 * ⏱️ `debug.style.time` — **Timestamp Tag** <img src="previews/time.svg" height="28" align="right" />
-  * *Appearance:* Bold dark-red text resting over a standard slate charcoal background plate.
+  <!--* ⏱️ `debug.style.timeLight` — **Timestamp Tag** (light mode) <img src="previews/timeLight.svg" height="28" align="right" />-->
+  * *Appearance:* Muted theme-matching text tracking system hours resting over an inverted theme-adaptive background panel.
 * ⚠️ `debug.style.warn` — **Standard System Warning** <img src="previews/warn.svg" height="28" align="right" />
-  * *Appearance:* Thick, high-contrast goldenrod yellow font face.
+  <!--* ⚠️ `debug.style.warnLight` — **Standard System Warning** (light mode) <img src="previews/warnLight.svg" height="28" align="right" />-->
+  * *Appearance:* Thick, high-contrast goldenrod yellow font resting over a tinted amber-gold background panel with distinct line borders.
 
 ### `debug.console( message, ...args )`
  - Routes logs into your standard target channel stream (defaulting to low-priority diagnostic streams).
