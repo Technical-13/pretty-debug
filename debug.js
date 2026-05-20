@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.4
+// @version      1.0.5
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -149,28 +149,28 @@
       this._showTag = config.showTag ?? true;
       this._showTime = config.showTime ?? true;
       this._styles = config.styles || {
-        debug: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px;',
-        debugLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px;',
-        error: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px;',
-        errorLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px;',
-        fatal: 'color: #FFEE55; background: #880000; font-weight: bold; padding: 2px; border-radius: 2px;',
-        info: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px;',
-        infoLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px;',
-        group: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold;',
-        groupLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold;',
-        log: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
-        logLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
+        debug: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px;',
+        debugLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px;',
+        error: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px;',
+        errorLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px;',
+        fatal: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background: #880000; color: #FFEE55; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
+        info: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px;',
+        infoLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px;',
+        group: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold;',
+        groupLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold;',
+        log: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        logLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
-        rainbow: 'background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); color: #000000; font-weight: bold; padding: 2px; border-radius: 2px;',
+        rainbow: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); color: #000000; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
         reset: '🚯',
         success: 'color: #00FF66; font-weight: bold;',
-        tag: 'color: #FF00FF; background: #000000; font-weight: bold; padding: 1px 4px; border-radius: 2px;',
-        time: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
-        timeLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
-        trace: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
-        traceLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
-        warn: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px;',
-        warnLight: 'margin: -3px -8px -4px -8px; padding: 3px 8px 4px 8px; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px;'
+        tag: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background-color: #000000; color: #FF00FF; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
+        time: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        timeLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
+        trace: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px;',
+        traceLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px;',
+        warn: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px;',
+        warnLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px;'
       };
       this._version = this._getVersion( config );
     }
