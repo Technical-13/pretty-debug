@@ -69,8 +69,15 @@ fetch( 'https://raw.githubusercontent.com/Technical-13/pretty-debug/refs/heads/m
  - Once initialized, call your specific logging levels directly from your application logic. Every method supports [console string substitution](https://developer.mozilla.org/en-US/docs/Web/API/console#using_string_substitutions) tokens and infinite trailing arguments:
  - If you need to style a specific string slice mid-sentence, pass public `debug.style` properties into your arguments array. Use `debug.style.reset` to smoothly restore your text colors right back to the method's native brand theme!
 
+### `debug.tag`
+ - The public `debug.tag` getter property returns the formatted application metadata tag string.
+
+```javascript
+const appTag = debug.tag;
+```
+
 ### Advanced Styling: `debug.style`
- - The public `debug.style` property exposes your active theme dictionary as a read-only proxy validated object that defaults to `debug.style.debug` if the specified style is `undefined`.
+ - The public `debug.style` getter property returns your active theme dictionary as a read-only proxy validated object that defaults to `debug.style.debug` if the specified style is `undefined`.
  - To style specific pieces of text *inside* a log sentence, insert multiple `%c` substitution markers into your message string, and pass your chosen styles sequentially inside the trailing variables array:
 
 ```javascript
