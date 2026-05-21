@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.0.7
+// @version      1.1.0
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -283,7 +283,7 @@
      * Exposes a protected proxy wrapper around the active design theme style configurations dictionary.
      *
      * @public
-     * @returns {Proxy<Object>} A proxy trapping missing style property requests and defaulting to 'debug' layout.
+     * @type {Proxy<Object>} A proxy trapping missing style property requests and defaulting to 'debug' layout.
      */
     get style() { return new Proxy( this._styles, { get: ( target, prop ) => { return target[ prop ] || target.debug; } } ); }
 
@@ -303,7 +303,7 @@
      * Exposes a [Name vVersion] tag for use in your script and logs.
      *
      * @public
-     * @returns {string} The raw string used for your tag with name and version.
+     * @type {string} The raw string used for your tag with name and version.
      */
     get tag() { return '[' + this._name + ' v' + this._version + ']'; }
 
