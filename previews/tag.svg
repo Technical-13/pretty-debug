@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 28" width="210" height="28">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 28" width="100%" height="28">
   <rect width="100%" height="100%" fill="#0D1117" stroke="#444C56" stroke-width="1" rx="4" />
-  <rect x="5" y="5" width="200" height="18" fill="#000000" rx="3" />
-  <text x="12" y="18" font-family="monospace" font-size="12" font-weight="bold" fill="#FF00FF">[myCoolUserScript v0.0.1]</text>
+  <rect x="0" y="4" width="100%" height="20" fill="#000000" rx="2" />
+  <text x="12" y="18" font-family="monospace" font-size="11px" font-weight="bold" fill="#FF00FF">[myCoolApp v2026.06.05.1830]</text>
 </svg>
