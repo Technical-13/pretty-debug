@@ -1,13 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 28" width="260" height="28">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208 28" width="100%" height="28">
+  <defs>
+    <linearGradient id="rainbowBg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF0000" />
+      <stop offset="16.6%" stop-color="#FFA500" />
+      <stop offset="33.3%" stop-color="#FFFF00" />
+      <stop offset="50%" stop-color="#008000" />
+      <stop offset="66.6%" stop-color="#0000FF" />
+      <stop offset="83.3%" stop-color="#4B0082" />
+      <stop offset="100%" stop-color="#EE82EE" />
+    </linearGradient>
+    <filter id="rainbowTextShadow">
+      <feDropShadow dx="1.5" dy="0" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="-1.5" dy="0" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="0" dy="1.5" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="0" dy="-1.5" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="1.06" dy="1.06" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="-1.06" dy="1.06" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="1.06" dy="-1.06" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+      <feDropShadow dx="-1.06" dy="-1.06" stdDeviation="0" flood-color="#000000" flood-opacity="1" />
+    </filter>
+  </defs>
   <rect width="100%" height="100%" fill="#0D1117" stroke="#444C56" stroke-width="1" rx="4" />
-  <g transform="translate(5, 5)">
-    <rect x="0" y="0" width="36" height="18" fill="#FF0000" />
-    <rect x="36" y="0" width="36" height="18" fill="#FFA500" />
-    <rect x="72" y="0" width="36" height="18" fill="#FFFF00" />
-    <rect x="108" y="0" width="36" height="18" fill="#008000" />
-    <rect x="144" y="0" width="36" height="18" fill="#0000FF" />
-    <rect x="180" y="0" width="35" height="18" fill="#4B0082" />
-    <rect x="215" y="0" width="35" height="18" fill="#EE82EE" />
-  </g>
-  <text x="12" y="18" font-family="monospace" font-size="12" font-weight="bold" fill="#FFFFFF" stroke="#000000" stroke-width="1.5" paint-order="stroke fill">RADICAL RETRO STYLE ACTIVATED</text>
+  <rect x="8" y="4" width="192" height="20" fill="url(#rainbowBg)" rx="2" />
+  <text x="16" y="18" font-family="monospace" font-size="11px" font-weight="bold" fill="#FFFFFF" filter="url(#rainbowTextShadow)">RADICAL RETRO STYLE ACTIVATED</text>
 </svg>
