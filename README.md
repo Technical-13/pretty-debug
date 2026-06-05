@@ -178,6 +178,25 @@ debug.network( 'Intercepted fetch response from path: %s', urlString, responseHe
 debug.success( 'Local database established. Total records synced: %d', totalCount );
 ```
 
+### [`debug.table( data, [ options ] )`](https://developer.mozilla.org/en-US/docs/Web/API/console/table_static)
+ - Generates an optimized structured data table inside the DevTools **Debug/Verbose channel**.
+ - Parameters:
+   * **`data`** `(Array|Object)` — The tabular dataset or collection object to evaluate.
+   * **`options`** `(Object)` *Optional* — Configuration object properties:
+   * `label` `(String)` — A header text string. Setting this automatically triggers `grouped: true`.
+   * `collapsed` `(Boolean)` — Starts the container in a closed state. Defaults to `true` if grouping is inferred.
+   * `columns` `(String[])` — An array of specific property keys to display as column headers.
+   * `grouped` `(Boolean)` — Forces a container layout block wrap even without a custom text label.
+
+```javascript
+// Example: Outputting subset user columns inside an expanded report block
+debug.table( userArray, { 
+  label: 'Active System Administrators', 
+  columns: [ 'firstName', 'clearanceLevel' ], 
+  collapsed: false 
+} );
+```
+
 ### [`debug.time( label )`](https://developer.mozilla.org/en-US/docs/Web/API/console#timers)
  - Starts a high-accuracy system stopwatch timer tracking a unique reference key token.
 ```javascript
