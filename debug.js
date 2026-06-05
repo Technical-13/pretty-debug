@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         pretty-debug
 // @namespace    https://github.com/Technical-13/pretty-debug
-// @version      1.1.0
+// @version      1.1.1
 // @description  A tiny, cross-platform JavaScript debug console featuring custom color styles and automatic runtime environment tracking.
 // @author       technical13 (https://greasyfork.org/en/users/216914-technical-13)
 // @license      BSD-3-Clause
@@ -149,28 +149,37 @@
       this._showTag = config.showTag ?? true;
       this._showTime = config.showTime ?? true;
       this._styles = config.styles || {
-        debug: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #8C8C8C; font-family: monospace; font-size: 11px; line-height: 15px;',
-        debugLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #5C5C5C; font-family: monospace; font-size: 11px; line-height: 15px;',
-        error: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #291A1A; color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F; font-family: monospace; font-size: 11px; line-height: 15px;',
-        errorLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFF2F0; color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7; font-family: monospace; font-size: 11px; line-height: 15px;',
-        fatal: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background: #880000; color: #FFEE55; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
-        info: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1A2233; color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C; font-family: monospace; font-size: 11px; line-height: 15px;',
-        infoLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #F0F4FF; color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF; font-family: monospace; font-size: 11px; line-height: 15px;',
-        group: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #F3F3F3; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 15px;',
-        groupLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #000000; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 15px;',
-        log: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; line-height: 15px;',
-        logLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; line-height: 15px;',
+        get b() { return 'font-weight: bold; '; },
+        bgColor( c ) { return 'background-color: ' + c + '; '; },
+        common: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; font-family: monospace; font-size: 11px; line-height: 15px; ',
+        get debug() { return this.common + this.bgColor( '#1F1F1F' ) + 'color: #8C8C8C;' },
+        get debugLight() { return this.common + this.bgColor( '#FFFFFF' ) + 'color: #5C5C5C;' },
+        get error() { return this.common + this.bgColor( '#291A1A' ) + 'color: #FF8080; border-top: 1px solid #5C1F1F; border-bottom: 1px solid #5C1F1F;' },
+        get errorLight() { return this.common + this.bgColor( '#FFF2F0' ) + 'color: #FF0000; border-top: 1px solid #FFCCC7; border-bottom: 1px solid #FFCCC7;' },
+        get fatal() { return this.common + this.bgColor( '#880000' ) + this.b + 'color: #FFEE55; border-radius: 2px; line-height: 13px;' },
+        get info() { return this.common + this.bgColor( '#1A2233' ) + 'color: #9ECBFF; border-top: 1px solid #26385C; border-bottom: 1px solid #26385C;' },
+        get infoLight() { return this.common + this.bgColor( '#F0F4FF' ) + 'color: #1A3C73; border-top: 1px solid #D0E0FF; border-bottom: 1px solid #D0E0FF;' },
+        get group() { return this.common + this.bgColor( '#1F1F1F' ) + this.b + 'color: #F3F3F3;' },
+        get groupLight() { return this.common + this.bgColor( '#FFFFFF' ) + this.b + 'color: #000000;' },
+        get log() { return this.common + this.bgColor( '#1F1F1F' ) + 'color: #E3E3E3;' },
+        get logLight() { return this.common + this.bgColor( '#FFFFFF' ) + 'color: #1F1F1F;' },
         network: 'color: #00FFFF; font-weight: bold; font-style: italic;',
-        rainbow: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); color: #000000; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
+        rainbowBg: 'background: linear-gradient( 90deg, #FF0000, #FFA500, #FFFF00, #008000, #0000FF, #4B0082, #EE82EE ); ',
+        rainbowBrdrCard: '1.5px 0px 0 #000000, -1.5px 0px 0 #000000, 0px 1.5px 0 #000000, 0px -1.5px 0 #000000',
+        rainbowBrdrDiag: '1.06px 1.06px 0 #000000, -1.06px 1.06px 0 #000000, 1.06px -1.06px 0 #000000, -1.06px -1.06px 0 #000000',
+        rainbowBrdrShal: '1.39px 0.57px 0 #000000, -1.39px 0.57px 0 #000000, 1.39px -0.57px 0 #000000, -1.39px -0.57px 0 #000000',
+        rainbowBrdrStep: '0.57px 1.39px 0 #000000, -0.57px 1.39px 0 #000000, 0.57px -1.39px 0 #000000, -0.57px -1.39px 0 #000000',
+        get rainbowBrdr() { return ' text-shadow: ' + this.rainbowBrdrCard + ', ' + this.rainbowBrdrDiag + ', ' + this.rainbowBrdrShal + ', ' + this.rainbowBrdrStep + '; ' },
+        get rainbow() { return this.common + this.b + this.rainbowBg + this.rainbowBrdr + 'color: #FFFFFF; border-radius: 2px; line-height: 13px;' },
         reset: '🚯',
         success: 'color: #00FF66; font-weight: bold;',
-        tag: 'margin: -3px 0px -4px 0px; padding: 3px 4px 4px 4px; display: inline-block; background-color: #000000; color: #FF00FF; font-family: monospace; font-size: 11px; font-weight: bold; line-height: 13px; border-radius: 2px;',
-        time: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; line-height: 15px;',
-        timeLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; line-height: 15px;',
-        trace: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #1F1F1F; color: #E3E3E3; font-family: monospace; font-size: 11px; line-height: 15px;',
-        traceLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFFFF; color: #1F1F1F; font-family: monospace; font-size: 11px; line-height: 15px;',
-        warn: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #332B1A; color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F; font-family: monospace; font-size: 11px; line-height: 15px;',
-        warnLight: 'margin: -3px 0px -4px 0px; padding: 3px 8px 4px 8px; display: inline-block; background-color: #FFFBE6; color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F; font-family: monospace; font-size: 11px; line-height: 15px;'
+        get tag() { return this.common + this.bgColor( '#000000' ) + this.b + 'color: #FF00FF; border-radius: 2px; line-height: 13px;' },
+        get time() { return this.common + this.bgColor( '#1F1F1F' ) + 'color: #E3E3E3;' },
+        get timeLight() { return this.common + this.bgColor( '#FFFFFF' ) + 'color: #1F1F1F;' },
+        get trace() { return this.common + this.bgColor( '#1F1F1F' ) + 'color: #E3E3E3;' },
+        get traceLight() { return this.common + this.bgColor( '#FFFFFF' ) + 'color: #1F1F1F;' },
+        get warn() { return this.common + this.bgColor( '#332B1A' ) + 'color: #FFCC66; border-top: 1px solid #664F1F; border-bottom: 1px solid #664F1F;' },
+        get warnLight() { return this.common + this.bgColor( '#FFFBE6' ) + 'color: #5C3C00; border-top: 1px solid #FFE58F; border-bottom: 1px solid #FFE58F;' }
       };
       this._version = this._getVersion( config );
     }
