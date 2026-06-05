@@ -309,6 +309,34 @@
     success( message, ...args ) { this._execute( 'success', message, ...args ); }
 
     /**
+     * Generates a table in the Debug channel.
+     *
+     * @public
+     * @param {Array|Object} data - The data to pass to the table
+     * @param {Object} [options={}] - Optional parameters
+     * @param {boolean} [options.collapsed] - Whether the group should start collapsed
+     * @param {string[]} [options.columns] - Subsets of columns to display
+     * @param {boolean} [options.grouped=false] - Whether the table should be grouped
+     * @param {string} [options.label] - A label for the console group
+     * @return {void}
+     * @example
+     * const tyrone = { firstName: 'Tyrone', lastName: 'Jones', age: 47 };
+     * const janet = { firstName: 'Janet', lastName: 'Smith', age: 36 };
+     * const maria = { firstName: 'Maria', lastName: 'Cruz', age: 19 };
+     * debug.table( [ tyrone, janet, maria ], { columns: [ 'firstName', 'age' ], label: 'Jones Family:' } );
+     */
+    table( data, { collapsed, columns, grouped = false, label } = {} ) {
+      if ( collapsed || label ) { grouped = true; }
+      if ( grouped && typeof collapsed !== 'boolean' ) { collapsed = true; }
+      const startLog = console.log;
+      if ( grouped ) { console[ collapsed ? 'groupCollapsed' : 'group' ]( label || 'Unnamed Table' ); }
+      console.log = console.debug;
+      console.table( data, columns );
+      if ( grouped ) { console.groupEnd(); }
+      console.log = startLog;
+    }
+
+    /**
      * Exposes a [Name vVersion] tag for use in your script and logs.
      *
      * @public
